@@ -1,0 +1,22 @@
+{
+  "name": "Freight",
+  "short_name": "Freight",
+  "description": "Load the train as it lumbers by. How long can you build your train?",
+  "id": "/",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1f2a3a",
+  "theme_color": "#1f2a3a",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "screenshots": [
+    { "src": "og.png", "sizes": "1200x630", "type": "image/png", "form_factor": "wide", "label": "Freight" }
+  ]
+}

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>Freight — How long can you build your train?</title>
+  <meta name="description" content="Freight: a kitschy mobile game about loading a train as it lumbers past your rail yard. Drag commodities onto the cars, follow the dispatcher's rules, and see how long a train you can build before it gets away from you.">
+  <meta name="keywords" content="freight, train game, mobile game, browser game, rail yard, commodities, puzzle, arcade">
+  <meta name="author" content="Rail Yard Loading Co.">
+  <link rel="canonical" href="__SITE_URL__/">
+
+  <!-- Theme / app-ness -->
+  <meta name="theme-color" content="#1f2a3a">
+  <meta name="color-scheme" content="light">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Freight">
+  <meta name="application-name" content="Freight">
+  <meta name="msapplication-TileColor" content="#1f2a3a">
+  <meta name="msapplication-TileImage" content="icon-192.png">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- Icons -->
+  <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="icon" href="icon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="icon-16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Freight">
+  <meta property="og:title" content="Freight — How long can you build your train?">
+  <meta property="og:description" content="A kitschy little train game. Load the cars as the freight lumbers by, follow the dispatcher's rules, and don't let it get away from you.">
+  <meta property="og:url" content="__SITE_URL__/">
+  <meta property="og:image" content="__SITE_URL__/og.png">
+  <meta property="og:image:secure_url" content="__SITE_URL__/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Freight logo above a cartoon steam train with cars full of watermelons, onions, coffee, wheat and wood.">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Freight — How long can you build your train?">
+  <meta name="twitter:description" content="A kitschy little train game. Load the cars as the freight lumbers by, follow the dispatcher's rules, and don't let it get away from you.">
+  <meta name="twitter:image" content="__SITE_URL__/og.png">
+  <meta name="twitter:image:alt" content="The Freight logo above a cartoon steam train with cars full of watermelons, onions, coffee, wheat and wood.">
+  <link rel="preload" href="fonts/alfa-slab-one-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/nunito-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ====================== TITLE ====================== -->
+  <section id="screen-title" class="screen active">
+    <div class="title-sky">
+      <div class="sun"></div>
+      <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+      <div class="hills"></div>
+    </div>
+    <div class="title-body">
+      <div class="badge">Rail Yard Loading Co.</div>
+      <h1 class="logo">FREIGHT</h1>
+      <p class="tagline">How long can <em>you</em> build your train?!</p>
+
+      <div class="title-train" aria-hidden="true">
+        <div class="tt-track"></div>
+        <div class="tt-train">
+          <span class="tt-car">🍉</span><span class="tt-car">🧅</span><span class="tt-car">☕</span><span class="tt-car">🌾</span><span class="tt-loco">🚂</span>
+        </div>
+      </div>
+
+      <button id="btn-play" class="btn btn-primary btn-big">▶ Load 'Em Up</button>
+      <div class="title-row">
+        <button id="btn-howto" class="btn btn-ghost">How to play</button>
+        <button id="btn-ledger" class="btn btn-ghost">Route Ledger</button>
+      </div>
+
+      <div id="title-best" class="title-best"></div>
+      <button id="btn-mute" class="mute" aria-label="Toggle sound">🔊</button>
+    </div>
+  </section>
+
+  <!-- ====================== HOW TO ====================== -->
+  <section id="screen-howto" class="screen modal-screen">
+    <div class="card">
+      <h2>How to play</h2>
+      <ol class="howto">
+        <li><b>The train rolls by.</b> Empty cars come in from the right. Fill every one before it leaves the yard.</li>
+        <li><b>Drag cargo onto a car.</b> Two crates wait above the track, two below. Drop one on any empty car (or tap a crate, then tap a car).</li>
+        <li><b>Mind the rules.</b> The dispatcher adds rules as you go, like <em>Onions can't ride next to Wood</em>. Break one and it bounces off.</li>
+        <li><b>It only gets faster.</b> Some cars roll in already loaded. Miss a car or break a rule and you lose a ❤️. Three strikes and the train's gone.</li>
+      </ol>
+      <button class="btn btn-primary btn-close" data-close="screen-howto">Got it</button>
+    </div>
+  </section>
+
+  <!-- ====================== GAME ====================== -->
+  <section id="screen-game" class="screen">
+    <header id="hud">
+      <div id="hearts" class="hearts" aria-label="Lives"></div>
+      <div class="hud-stat"><span class="hud-ico">🚃</span><span id="hud-cars">0</span></div>
+      <div class="hud-stat"><span class="hud-ico">⏱</span><span id="hud-time">0:00</span></div>
+      <div class="hud-stat speed"><span id="hud-speed">8</span><small>mph</small></div>
+    </header>
+
+    <div id="rules-bar">
+      <span class="rules-label">Rules</span>
+      <div id="rules-chips" class="rules-chips"><span class="rules-none">none yet… enjoy it</span></div>
+    </div>
+
+    <div id="yard">
+      <div class="sky"><div class="sun small"></div><div class="cloud c1"></div><div class="cloud c2"></div></div>
+      <div class="far-hills"></div>
+      <div class="near-hills"></div>
+
+      <div id="tray-top" class="tray"></div>
+
+      <div id="track">
+        <div class="ballast"></div>
+        <div class="ties"></div>
+        <div class="rail rail-top"></div>
+        <div class="rail rail-bottom"></div>
+        <div id="train"></div>
+      </div>
+
+      <div id="tray-bottom" class="tray"></div>
+
+      <div id="toast" class="toast"></div>
+      <div id="rule-toast" class="rule-toast">
+        <div class="rule-toast-kicker">📋 New rule from dispatch</div>
+        <div class="rule-toast-text"></div>
+      </div>
+      <div id="countdown" class="countdown"></div>
+    </div>
+
+    <div id="drag-ghost" class="drag-ghost" aria-hidden="true"></div>
+  </section>
+
+  <!-- ====================== GAME OVER ====================== -->
+  <section id="screen-over" class="screen modal-screen">
+    <div class="card card-over">
+      <div class="over-kicker">End of the line</div>
+      <h2 id="over-title">The train got away!</h2>
+      <div id="over-route" class="over-route">Omaha → Denver</div>
+
+      <div class="big-stat">
+        <div class="big-num"><span id="over-cars">0</span><small>cars</small></div>
+        <div class="big-label">train length</div>
+        <div id="over-record" class="record-pill"></div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat"><div class="stat-num" id="over-moved">0</div><div class="stat-label">crates moved</div></div>
+        <div class="stat"><div class="stat-num" id="over-time">0:00</div><div class="stat-label">survived</div></div>
+        <div class="stat"><div class="stat-num" id="over-speed">0</div><div class="stat-label">top mph</div></div>
+        <div class="stat"><div class="stat-num" id="over-rules">0</div><div class="stat-label">rules juggled</div></div>
+      </div>
+
+      <div id="over-manifest" class="manifest"></div>
+      <div id="over-grade" class="grade"></div>
+
+      <div class="btn-row">
+        <button id="btn-again" class="btn btn-primary">Run it again</button>
+        <button id="btn-home" class="btn btn-ghost">Home</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== WEEKLY DISPATCH ====================== -->
+  <section id="screen-weekly" class="screen modal-screen">
+    <div class="card card-weekly">
+      <div class="over-kicker">📮 Weekly dispatch</div>
+      <h2>Your week on the rails</h2>
+      <div id="weekly-sub" class="weekly-sub">Week of Sep 7</div>
+
+      <div class="big-stat">
+        <div class="big-num"><span id="wk-cars">0</span><small>cars</small></div>
+        <div class="big-label">combined train length</div>
+        <div id="wk-cars-delta" class="delta"></div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat"><div class="stat-num" id="wk-games">0</div><div class="stat-label">routes run</div><div class="delta" id="wk-games-delta"></div></div>
+        <div class="stat"><div class="stat-num" id="wk-moved">0</div><div class="stat-label">crates moved</div><div class="delta" id="wk-moved-delta"></div></div>
+        <div class="stat"><div class="stat-num" id="wk-time">0:00</div><div class="stat-label">time on shift</div><div class="delta" id="wk-time-delta"></div></div>
+        <div class="stat"><div class="stat-num" id="wk-longest">0</div><div class="stat-label">longest train</div><div class="delta" id="wk-longest-delta"></div></div>
+      </div>
+
+      <div id="wk-fav" class="fav"></div>
+      <div id="wk-trainviz" class="trainviz" aria-hidden="true"></div>
+
+      <button id="btn-weekly-continue" class="btn btn-primary">Back to the yard</button>
+    </div>
+  </section>
+
+  <!-- ====================== LEDGER ====================== -->
+  <section id="screen-ledger" class="screen page-screen">
+    <header class="page-head">
+      <button class="btn btn-ghost btn-back" data-close="screen-ledger">‹ Back</button>
+      <h2>Route Ledger</h2>
+      <button id="btn-clear" class="btn btn-ghost btn-danger">Clear</button>
+    </header>
+    <div id="ledger-body" class="page-body"></div>
+  </section>
+
+</div>
+<script src="game.js"></script>
+</body>
+</html>
